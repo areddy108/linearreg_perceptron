@@ -7,6 +7,11 @@ except:
     import matplotlib.pyplot as plt
 
 def transform_data(features):
+    transformed_features = np.zeros(features.shape)
+    for i in range(np.size(features,0)):
+            transformed_features[i, 0] = np.sqrt(np.square(features[i,0]) + np.square(features[i,1]))
+            transformed_features[i, 1] = np.arctan(features[i,1]/features[i,0])
+    return(transformed_features)
     """
     Data can be transformed before being put into a linear discriminator. If the data
     is not linearly separable, it can be transformed to a space where the data
@@ -19,10 +24,10 @@ def transform_data(features):
     Returns:
         transformed_features (np.ndarray): features after being transformed by the function
     """
-    raise NotImplementedError()
+    #raise NotImplementedError()
 
 class Perceptron():
-    def __init__(self, max_iterations=200):
+    def __init__(self, max_iterations=200, weights = None):
         """
         This implements a linear perceptron for classification. A single
         layer perceptron is an algorithm for supervised learning of a binary
@@ -48,9 +53,40 @@ class Perceptron():
 
         """
         self.max_iterations = max_iterations
-        raise NotImplementedError()
+        self.weights = weights
+        #raise NotImplementedError()
+
+    def target(self, weights, features, targets):
+
+        for i in range(np.size(features, 0)):
+            if np.dot(weights, features[i, :]) *  targets[i] <= 0:
+                return True
+
+        return False
+
+    def H(self, int):
+        if(int > 0):
+            return 1
+        else:
+            return -1
 
     def fit(self, features, targets):
+
+        weights = np.array([1, 2, 3])
+        oneF = np.ones((np.size(features,0), 1))
+        features = np.column_stack((oneF, features))
+        count = 0
+        while(count < self.max_iterations and self.target(weights, features, targets)):
+            count = count + 1
+            for i in range(np.size(features, 0)):
+
+                if(targets[i] * (weights[0]*1 + weights[1]*features[i, 1] + weights[2]*features[i, 2]) <=0):
+                    weights = weights + features[i, :]*targets[i]
+
+        self.weights = weights
+
+
+
         """
         Fit a single layer perceptron to features to classify the targets, which
         are classes (-1 or 1). This function should terminate either after
@@ -64,9 +100,16 @@ class Perceptron():
         Returns:
             None (saves model and training data internally)
         """
-        raise NotImplementedError()
+        #raise NotImplementedError()
 
     def predict(self, features):
+        predictions = np.zeros( np.size(features, 0))
+        oneF = np.ones((np.size(features,0), 1))
+        features = np.column_stack((oneF, features))
+        for i in range(np.size(features, 0)):
+            predictions[i] = self.H((self.weights[0] * 1 + self.weights[1] * features[i, 1] + self.weights[2] * features[i, 2]))
+
+        return predictions
         """
         Given features, a 2D numpy array, use the trained model to predict target 
         classes. Call this after calling fit.
@@ -76,7 +119,7 @@ class Perceptron():
         Returns:
             predictions (np.ndarray): Output of saved model on features.
         """
-        raise NotImplementedError()
+        #raise NotImplementedError()
 
     def visualize(self, features, targets):
         """
@@ -92,4 +135,4 @@ class Perceptron():
         Returns:
             None (plots to the active figure)
         """
-        raise NotImplementedError()
+        #raise NotImplementedError()

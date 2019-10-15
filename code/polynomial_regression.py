@@ -7,7 +7,7 @@ except:
     import matplotlib.pyplot as plt
 
 class PolynomialRegression():
-    def __init__(self, degree):
+    def __init__(self, degree, weights = None):
         """
         Implement polynomial regression from scratch.
         
@@ -49,10 +49,24 @@ class PolynomialRegression():
         Args:
             degree (int): Degree of polynomial used to fit the data.
         """
+
         self.degree = degree
-        raise NotImplementedError()
+        self.weights = weights
+        #raise NotImplementedError()
     
     def fit(self, features, targets):
+        matrix = np.zeros((features.size, self.degree+1))
+
+        for i in range(features.size):
+            for j in range(self.degree+1):
+                matrix[i, j] = np.power(features[i], j)
+
+
+        weights = np.matmul(np.matmul(np.linalg.inv(np.matmul(matrix.transpose(), matrix)), matrix.transpose()),targets)
+        self.weights = weights
+
+
+
         """
         Fit the given data using a polynomial. The degree is given by self.degree,
         which is set in the __init__ function of this class. The goal of this
@@ -65,10 +79,20 @@ class PolynomialRegression():
             targets (np.ndarray): 1D array containing real-valued targets.
         Returns:
             None (saves model and training data internally)
+            
         """
-        raise NotImplementedError()
+        #raise NotImplementedError()
 
     def predict(self, features):
+        predictions = np.zeros(features.size)
+        for i in range(features.size):
+            for j in range(self.weights.size):
+               predictions[i] = predictions[i] + self.weights[j] * np.power(features[i], j)
+
+        return predictions
+
+
+
         """
         Given features, a 1D numpy array, use the trained model to predict target 
         estimates. Call this after calling fit.
@@ -78,7 +102,7 @@ class PolynomialRegression():
         Returns:
             predictions (np.ndarray): Output of saved model on features.
         """
-        raise NotImplementedError()
+        #raise NotImplementedError()
 
     def visualize(self, features, targets):
         """

@@ -1,6 +1,9 @@
 import numpy as np
 
 def mean_squared_error(estimates, targets):
+
+    MSE = np.sum(np.square(np.subtract(estimates, targets)))/estimates.size
+    return MSE
     """
     Mean squared error measures the average of the square of the errors (the
     average squared difference between the estimated values and what is 
@@ -12,4 +15,4 @@ def mean_squared_error(estimates, targets):
 
     https://en.wikipedia.org/wiki/Mean_squared_error
     """
-    raise NotImplementedError()
+    #raise NotImplementedError()

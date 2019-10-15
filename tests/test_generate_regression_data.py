@@ -9,3 +9,6 @@ def test_generate_regression_data():
             x, y = generate_regression_data(degree, amount)
             assert (len(x) == amount and len(y) == amount)
             assert (x.min() >= -1 and x.max() <= 1)
+
+
+

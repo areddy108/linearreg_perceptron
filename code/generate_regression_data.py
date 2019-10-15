@@ -1,6 +1,22 @@
 import numpy as np 
 
 def generate_regression_data(degree, N, amount_of_noise=1.0):
+
+    coefficients = np.random.randint(-10, 10, degree+1)
+    #print(degree, coefficients)
+    x = 2*np.random.random_sample(N) - 1
+    y = np.zeros(N)
+
+
+    for i in range(N):
+        for j in range(degree+1):
+            y[i] = y[i] + coefficients[j]*np.power(x[i], j)
+
+
+    sd = np.std(y)
+    y = y + np.random.normal(loc=0.0, scale=sd*amount_of_noise, size = y.shape)
+    return x, y
+
     """
     Generate two numpy arrays that have a roughly polynomial relationship 
     between them of degree 'degree'. The two arrays should have size
@@ -40,4 +56,4 @@ def generate_regression_data(degree, N, amount_of_noise=1.0):
             responds to x as a polynomial of degree. 
 
     """
-    raise NotImplementedError()
+   # raise NotImplementedError()
